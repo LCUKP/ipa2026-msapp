@@ -45,7 +45,7 @@ def router_detail(router_ip):
                 {"_id": 0, "router_ip": 1, "timestamp": 1, "interfaces": 1},
             )
             .sort("timestamp", -1)
-            .limit(3)
+            .limit(5)
         )
         return render_template(
             "router_detail.html",
