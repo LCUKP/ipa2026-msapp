@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Router Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>Router Manager</h1>
+        <p>Save Router connection information to MongoDB.</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <section>
+            <h2>Add Router</h2>
+            <form action="{{ url_for('add_router') }}" method="POST">
+                <label for="ip">Router IP Address</label>
+                <input type="text" id="ip" name="ip"
+                       placeholder="192.168.1.1" required>
+
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"
+                       placeholder="admin" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Test password only" required>
+
+                <button type="submit">Save Router</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Saved Routers</h2>
+
+            {% if routers %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for router in routers %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('router_detail', router_ip=router.ip) }}">{{ router.ip }}</a>
+                            </td>
+                            <td>{{ router.username }}</td>
+                            <td>
+                                <form action="{{ url_for('delete_router', router_id=router._id|string) }}"
+                                      method="POST">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No routers saved yet.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,5 @@
+pika==1.4.4
+pymongo>=4.10,<5.0
+netmiko
+ntc-templates
+paramiko==4.0.0

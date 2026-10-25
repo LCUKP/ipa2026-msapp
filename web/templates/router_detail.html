@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Router Detail - {{ router_ip }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>Router: {{ router_ip }}</h1>
+
+        <p>
+            <a href="{{ url_for('index') }}">Back to Router Manager</a>
+        </p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if records %}
+            <h2>Interface Status — Latest 3 Records</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp (UTC)</th>
+                        <th>Interface</th>
+                        <th>IP Address</th>
+                        <th>Status</th>
+                        <th>Protocol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        {% for interface in record.interfaces %}
+                        <tr>
+                            <td>
+                                {% if record.timestamp %}
+                                    {{ record.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                                {% endif %}
+                            </td>
+                            <td>{{ interface.interface }}</td>
+                            <td>{{ interface.ip_address }}</td>
+                            <td>{{ interface.status }}</td>
+                            <td>{{ interface.proto }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% elif not error %}
+            <p>No interface history found for this router yet.</p>
+        {% endif %}
+    </main>
+</body>
+</html>
